@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tripodea.BusDataAccess", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tripodea.ServiceLayer", "Tripodea.BusServiceLayer\Tripodea.ServiceLayer.csproj", "{00C1E530-5D78-4BAB-9A82-C5FB36B81C0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tripodea.Web", "Tripodea.Web\Tripodea.Web.csproj", "{B4AB3B35-267E-4014-B5AF-B28D07E3EE6F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{00C1E530-5D78-4BAB-9A82-C5FB36B81C0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00C1E530-5D78-4BAB-9A82-C5FB36B81C0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00C1E530-5D78-4BAB-9A82-C5FB36B81C0B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B4AB3B35-267E-4014-B5AF-B28D07E3EE6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4AB3B35-267E-4014-B5AF-B28D07E3EE6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4AB3B35-267E-4014-B5AF-B28D07E3EE6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4AB3B35-267E-4014-B5AF-B28D07E3EE6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
