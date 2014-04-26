@@ -1,0 +1,3 @@
+﻿  <connectionStrings>
+    <add name="TripodeaDbConnection" providerName="System.Data.SqlClient" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Tripodea.com.Db;Persist Security Info=True;User ID=tripodea;Password=12345" />
+  </connectionStrings>
