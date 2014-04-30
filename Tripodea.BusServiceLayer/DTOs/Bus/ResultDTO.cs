@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tripodea.BusDomain;
 
-namespace Tripodea.ServiceLayer.DTO
+namespace Tripodea.ServiceLayer.DTOs.Bus
 {
     public class ResultDTO
     {

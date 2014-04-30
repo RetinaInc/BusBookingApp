@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="BusContext.cs" />
     <Compile Include="Configurations.cs" />
+    <Compile Include="InitializeDb.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />

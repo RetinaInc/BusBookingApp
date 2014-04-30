@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Tripodea.BusDataAccess.Repositories;
 using Tripodea.BusDomain;
-using Tripodea.ServiceLayer.DTO;
+using Tripodea.ServiceLayer.DTOs.Bus;
 
 namespace Tripodea.ServiceLayer.Bus
 {

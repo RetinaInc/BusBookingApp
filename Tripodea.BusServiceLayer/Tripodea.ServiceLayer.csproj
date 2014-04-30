@@ -48,11 +48,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bus\BusService.cs" />
-    <Compile Include="DTO\OrderDTO.cs" />
-    <Compile Include="DTO\ResultDTO.cs" />
-    <Compile Include="DTO\SearchDTO.cs" />
+    <Compile Include="DTOs\Bus\OrderDTO.cs" />
+    <Compile Include="DTOs\Bus\ResultDTO.cs" />
+    <Compile Include="DTOs\Bus\SearchDTO.cs" />
     <Compile Include="Bus\IBusService.cs" />
-    <Compile Include="DTO\SeatDTO.cs" />
+    <Compile Include="DTOs\Bus\SeatDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
