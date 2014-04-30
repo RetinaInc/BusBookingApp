@@ -12,7 +12,7 @@ namespace Tripodea.BusDataAccess
 {
     public class BusContext : DbContext
     {
-        public BusContext() : base("TripodeaDbConnection") { }
+        public BusContext() : base("AppDb") { }
         public DbSet<Company> Companies { get; set; }
         public DbSet<BusType> BuseTypes { get; set; }
         //public DbSet<Seat_old> Seats { get; set; }
