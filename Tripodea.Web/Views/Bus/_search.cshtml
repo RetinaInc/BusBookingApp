@@ -1,0 +1,40 @@
+﻿@model Tripodea.ServiceLayer.DTOs.Bus.SearchDto
+
+<script>
+    $(function () {
+        $('#Departure').datetimepicker({
+            timepicker: false,
+            formatDate: 'm/d/Y',
+            minDate: '01/01/-1970',
+            //format: 'm/d/Y'
+            format: 'j-F-y'
+        });
+    });
+</script>
+<form class="form-horizontal">
+    <fieldset>
+        <div class="form-group">
+            <label class="label label-default" for="JourneyFromId">From</label>
+            @Html.DropDownListFor(model => model.JourneyFromId,
+                                    new SelectList(ViewBag.LocationList, "LocationId", "Name"),
+                                    "Select Location", new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <label class="label label-default" for="JourneyToId">To</label>
+            @Html.DropDownListFor(model => model.JourneyToId,
+                                    new SelectList(ViewBag.LocationList, "LocationId", "Name"),
+                                    "Select Location", new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <label class="label label-default" for="Departure">Departure</label>
+            @Html.TextBoxFor(model=>model.Departure, new
+            {
+                @class="form-control",
+                placeholder = "When to leave"
+            })
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-success" value="Search" />
+        </div>
+    </fieldset>
+</form>

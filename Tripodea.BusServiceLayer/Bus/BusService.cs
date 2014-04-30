@@ -39,12 +39,12 @@ namespace Tripodea.ServiceLayer.Bus
             //return locations;
         }
 
-        public IEnumerable<Schedule> SearchBus(SearchDTO searchBus)
+        public IEnumerable<Schedule> SearchBus(SearchDto searchBus)
         {
             var schedules = unit_of_work.ScheduleRepository.Get(
                 filter:
-                s => s.JourneyFrom.Name == searchBus.JourneyFrom &&
-                s.JourneyTo.Name == searchBus.JourneyTo,
+                s => s.JourneyFromId == searchBus.JourneyFromId &&
+                s.JourneyToId == searchBus.JourneyToId,
                 includeProperties: "Company, JourneyFrom, JourneyTo, BusType");
 
             // filter for date and time
@@ -56,97 +56,97 @@ namespace Tripodea.ServiceLayer.Bus
             return schedules;
         }
 
-        public ResultDTO GetResultDetail(int scheduleId)
+        public ResultDto GetResultDetail(int scheduleId)
         {
-            // the result variable initiated
-            ResultDTO result = new ResultDTO();
-            result.SelectedSeats = "";
+            //// the result variable initiated
+            //ResultDto result = new ResultDto();
+            //result.SelectedSeats = "";
 
-            // get schedule info
-            result.Schedule = unit_of_work.ScheduleRepository.Get(
-                filter: s => s.ScheduleId == scheduleId).
-                FirstOrDefault();
+            //// get schedule info
+            //result.Schedule = unit_of_work.ScheduleRepository.Get(
+            //    filter: s => s.ScheduleId == scheduleId).
+            //    FirstOrDefault();
 
-            // get all the seats in this schedule
-            List<string> allSeats = unit_of_work.SeatRepository.Get(
-                filter: s => s.SeatFormatId == result.Schedule.BusType.SeatFormatId)
-                .Select(s => s.SeatNumber).ToList();
+            //// get all the seats in this schedule
+            //List<string> allSeats = unit_of_work.SeatRepository.Get(
+            //    filter: s => s.SeatFormatId == result.Schedule.BusType.SeatFormatId)
+            //    .Select(s => s.SeatNumber).ToList();
 
-            // get booked seats
-            List<string> bookedSeats = unit_of_work.TicketRepository.Get(
-                filter: t => t.ScheduleId == scheduleId)
-                .Select(t => t.SeatNumber).ToList();
+            //// get booked seats
+            //List<string> bookedSeats = unit_of_work.TicketRepository.Get(
+            //    filter: t => t.ScheduleId == scheduleId)
+            //    .Select(t => t.SeatNumber).ToList();
 
-            // set availableSeats to allSeats
-            List<string> availableSeats = allSeats;
+            //// set availableSeats to allSeats
+            //List<string> availableSeats = allSeats;
 
-            // initiate result.Seats 
-            result.Seats = new List<SeatDTO>();
+            //// initiate result.Seats 
+            //result.Seats = new List<SeatDto>();
 
-            // if there are booked seats
-            if (bookedSeats.Count > 0)
-            {
-                // availableSeats = allSeats - bookedSeats
-                availableSeats = allSeats.Except(bookedSeats).ToList();
+            //// if there are booked seats
+            //if (bookedSeats.Count > 0)
+            //{
+            //    // availableSeats = allSeats - bookedSeats
+            //    availableSeats = allSeats.Except(bookedSeats).ToList();
 
-                // create seats for the result
-                foreach (var seat in bookedSeats)
-                {
-                    // iniitate SeatDTO
-                    SeatDTO newSeat = new SeatDTO();
-                    // set seat number as bookedSeat number
-                    newSeat.SeatNumber = seat;
-                    // status is 0 for booked seats
-                    newSeat.Status = 0;
-                    // add the seat to the result
-                    result.Seats.Add(newSeat);
-                }
-            }
+            //    // create seats for the result
+            //    foreach (var seat in bookedSeats)
+            //    {
+            //        // iniitate SeatDTO
+            //        SeatDto newSeat = new SeatDto();
+            //        // set seat number as bookedSeat number
+            //        newSeat.SeatNumber = seat;
+            //        // status is 0 for booked seats
+            //        newSeat.Status = 0;
+            //        // add the seat to the result
+            //        result.Seats.Add(newSeat);
+            //    }
+            //}
 
-            // add available seats
-            foreach (var seat in availableSeats)
-            {
-                SeatDTO newSeat = new SeatDTO();
-                newSeat.SeatNumber = seat;
-                // status is 1 for available seats
-                newSeat.Status = 1;
-                result.Seats.Add(newSeat);
-            }
+            //// add available seats
+            //foreach (var seat in availableSeats)
+            //{
+            //    SeatDto newSeat = new SeatDto();
+            //    newSeat.SeatNumber = seat;
+            //    // status is 1 for available seats
+            //    newSeat.Status = 1;
+            //    result.Seats.Add(newSeat);
+            //}
 
-            return result;
+            return null;
         }
         // create an order for confirmation
-        public OrderDTO Order(ResultDTO result)
+        public OrderDto Order(ResultDto result)
         {
-            OrderDTO order_dto = new OrderDTO();
+            //OrderDto order_dto = new OrderDto();
 
-            order_dto.PassengerName = "Demo User";
-            order_dto.Schedule = unit_of_work.ScheduleRepository.Get(
-                                    filter: s => s.ScheduleId == result.Schedule.ScheduleId)
-                                    .FirstOrDefault();
+            //order_dto.PassengerName = "Demo User";
+            //order_dto.Schedule = unit_of_work.ScheduleRepository.Get(
+            //                        filter: s => s.ScheduleId == result.Schedule.ScheduleId)
+            //                        .FirstOrDefault();
 
-            order_dto.SelectedSeats = new List<SeatDTO>();
-            order_dto.SeatList = result.SelectedSeats;
+            //order_dto.SelectedSeats = new List<SeatDto>();
+            //order_dto.SeatList = result.SelectedSeats;
 
-            List<string> seats = result.SelectedSeats.Split(' ').ToList();
-            foreach (string seat in seats)
-            {
-                SeatDTO seat_dto = new SeatDTO();
-                seat_dto.SeatNumber = seat;
+            //List<string> seats = result.SelectedSeats.Split(' ').ToList();
+            //foreach (string seat in seats)
+            //{
+            //    SeatDto seat_dto = new SeatDto();
+            //    seat_dto.SeatNumber = seat;
 
-                // get seat class
-                seat_dto.SeatClass = unit_of_work.SeatRepository.Get(
-                    filter: s => s.SeatNumber == seat &&
-                            s.SeatFormatId == result.Schedule.BusType.SeatFormatId)
-                            .Select(s => s.SeatClass).FirstOrDefault();
+            //    // get seat class
+            //    seat_dto.SeatClass = unit_of_work.SeatRepository.Get(
+            //        filter: s => s.SeatNumber == seat &&
+            //                s.SeatFormatId == result.Schedule.BusType.SeatFormatId)
+            //                .Select(s => s.SeatClass).FirstOrDefault();
 
-                order_dto.SelectedSeats.Add(seat_dto);
-            }
+            //    order_dto.SelectedSeats.Add(seat_dto);
+            //}
 
-            return order_dto;
+            return null;
         }
 
-        public void BuyTicket(OrderDTO order)
+        public void BuyTicket(OrderDto order)
         {
             //create the tickets for the order
             order.Schedule = unit_of_work.ScheduleRepository.GetByID(order.Schedule.ScheduleId);

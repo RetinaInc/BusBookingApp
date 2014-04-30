@@ -1,40 +1,16 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Bus Journeys";
 }
-
-<h2>@ViewBag.Title</h2>
-<hr/>
+<h2>
+    <img src="/images/bus.png" class="pull-left" />&nbsp;
+    @ViewBag.Title
+</h2>
+<hr />
 <div class="container">
     <div class="col-md-3">
-        <form class="form-horizontal">
-            <fieldset>
-                <div class="form-group">
-                    <label class="label label-default">From</label>
-                    <select class="form-control">
-                        <option>Dhaka</option>
-                        <option>Sylhet</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="label label-default">To</label>
-                    <select class="form-control">
-                        <option>Sylhet</option>
-                        <option>Dhaka</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="label label-default">Departure</label>
-                    <input type="text" class="form-control" placeholder="Departure Date"/>
-                </div>
-                <div class="form-group">
-                    <input type="submit" class="btn btn-success" value="Search"/>
-                </div>
-            </fieldset>
-        </form>
+        @Html.Action("Search")
     </div>
     <div class="col-md-9">
-        hello world
+        @Html.Action("Result")
     </div>
 </div>
-

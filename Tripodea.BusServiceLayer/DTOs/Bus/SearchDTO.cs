@@ -8,16 +8,18 @@ using System.Threading.Tasks;
 
 namespace Tripodea.ServiceLayer.DTOs.Bus
 {
-    public class SearchDTO
+    public class SearchDto
     {
         [Required(ErrorMessage = "Required Field")]
-        public virtual string JourneyFrom { get; set; }
+        [Display(Name = "From")]
+        public int JourneyFromId { get; set; }
         [Required(ErrorMessage = "Required Field")]
-        public virtual string JourneyTo { get; set; }
-
+        [Display(Name = "To")]
+        public int JourneyToId { get; set; }
         [Required(ErrorMessage = "Required Field")]
         [DataType(DataType.DateTime, ErrorMessage = "You must select a date.")]
+        [Display(Name = "Departure Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy  H:mm}")]
-        public virtual DateTime Departure { get; set; }
+        public DateTime Departure { get; set; }
     }
 }

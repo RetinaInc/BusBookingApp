@@ -173,16 +173,19 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\jquery.datetimepicker.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\bus.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.datetimepicker.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -218,6 +221,8 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Bus\Index.cshtml" />
+    <Content Include="Views\Bus\_search.cshtml" />
+    <Content Include="Views\Bus\_result.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -228,6 +233,20 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Tripodea.BusDataAccess\Tripodea.BusDataAccess.csproj">
+      <Project>{6f9fc2b4-22cb-4b52-ad61-2e6920a0b7bd}</Project>
+      <Name>Tripodea.BusDataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tripodea.BusDomain\Tripodea.BusDomain.csproj">
+      <Project>{e8972aa1-8c11-482f-9e2f-75575f6a0d00}</Project>
+      <Name>Tripodea.BusDomain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tripodea.BusServiceLayer\Tripodea.ServiceLayer.csproj">
+      <Project>{00c1e530-5d78-4bab-9a82-c5fb36b81c0b}</Project>
+      <Name>Tripodea.ServiceLayer</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

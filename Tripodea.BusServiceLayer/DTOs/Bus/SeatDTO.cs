@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tripodea.ServiceLayer.DTOs.Bus
 {
-    public class SeatDTO
+    public class SeatDto
     {
         public virtual string SeatNumber { get; set; }
         public virtual string SeatClass { get; set; }

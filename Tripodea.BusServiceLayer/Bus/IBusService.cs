@@ -10,15 +10,15 @@ namespace Tripodea.ServiceLayer.Bus
 {
     public interface IBusService : IDisposable
     {
-        IEnumerable<Schedule> SearchBus(SearchDTO searchBus);
-        ResultDTO GetResultDetail(int scheduleId);
+        IEnumerable<Schedule> SearchBus(SearchDto searchBus);
+        ResultDto GetResultDetail(int scheduleId);
 
         List<string> GetLocations();
 
-        void BuyTicket(OrderDTO order);
+        void BuyTicket(OrderDto order);
 
-        void Dispose();
+        new void Dispose();
 
-        OrderDTO Order(ResultDTO result);
+        OrderDto Order(ResultDto result);
     }
 }

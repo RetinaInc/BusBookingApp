@@ -11,6 +11,8 @@ namespace Tripodea.BusDomain
     public class Schedule
     {
         public virtual int ScheduleId { get; set; }
+        [Required]
+        public virtual string Description { get; set; }
         
         [Required]
         [DataType(DataType.DateTime)]

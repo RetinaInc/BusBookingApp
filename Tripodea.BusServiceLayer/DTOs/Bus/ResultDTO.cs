@@ -7,10 +7,12 @@ using Tripodea.BusDomain;
 
 namespace Tripodea.ServiceLayer.DTOs.Bus
 {
-    public class ResultDTO
+    public class ResultDto
     {
-        public virtual Schedule Schedule { get; set; }
-        public virtual ICollection<SeatDTO> Seats { get; set; }
-        public virtual string SelectedSeats { get; set; }
+        public int ScheduleId { get; set; }
+        public int JourneyFromId { get; set; }
+        public int JourneyToId { get; set; }
+        public string Bus { get; set; }
+        public int AvailableSeats { get; set; }
     }
 }

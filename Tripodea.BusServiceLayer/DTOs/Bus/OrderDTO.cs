@@ -8,9 +8,9 @@ using Tripodea.BusDomain;
 
 namespace Tripodea.ServiceLayer.DTOs.Bus
 {
-    public class OrderDTO
+    public class OrderDto
     {
-        public virtual ICollection<SeatDTO> SelectedSeats { get; set; }
+        public virtual ICollection<SeatDto> SelectedSeats { get; set; }
         public virtual string SeatList { get; set; }
         public virtual Schedule Schedule { get; set; }
         [Required]
