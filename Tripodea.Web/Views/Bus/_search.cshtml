@@ -12,18 +12,19 @@
     });
 </script>
 <form class="form-horizontal">
+    @Html.AntiForgeryToken()
     <fieldset>
         <div class="form-group">
             <label class="label label-default" for="JourneyFromId">From</label>
             @Html.DropDownListFor(model => model.JourneyFromId,
-                                    new SelectList(ViewBag.LocationList, "LocationId", "Name"),
-                                    "Select Location", new { @class = "form-control" })
+                new SelectList(ViewBag.LocationList, "LocationId", "Name"),
+                "Select Location", new { @class = "form-control" })
         </div>
         <div class="form-group">
             <label class="label label-default" for="JourneyToId">To</label>
             @Html.DropDownListFor(model => model.JourneyToId,
-                                    new SelectList(ViewBag.LocationList, "LocationId", "Name"),
-                                    "Select Location", new { @class = "form-control" })
+                new SelectList(ViewBag.LocationList, "LocationId", "Name"),
+                "Select Location", new { @class = "form-control" })
         </div>
         <div class="form-group">
             <label class="label label-default" for="Departure">Departure</label>
