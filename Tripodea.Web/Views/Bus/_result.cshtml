@@ -1,16 +1,27 @@
 ﻿@model IEnumerable<Tripodea.ServiceLayer.DTOs.Bus.ResultDto>
 <div class="container">
-    <label class="label label-info">
-        Showing @Model.Count() journies&nbsp;
-    </label>
+    @if (!Model.Any())
+    {
+        <br />
+        <div class="alert alert-warning">
+            Sorry, couldn't find any journeys at this date...
+        </div>
+    }
+    else
+    {
+        <label class="label label-info">
+            Showing @Model.Count() journies&nbsp;
+        </label>
+    }
+
     @foreach (var result in Model)
     {
         <div>
-            <h4><a href="#">@result.JourneyFrom to @result.JourneyTo</a></h4>
+            <h4><a href="#">@result.Bus</a></h4>
             <h6>
+                @result.JourneyFrom to @result.JourneyTo&nbsp;|&nbsp;
                 Available seats
                 <span class="label label-success">@result.AvailableSeats</span> &nbsp;|&nbsp;
-                @result.Bus &nbsp;|&nbsp;
                 Departure: @result.Departure
                 <br />
             </h6>
@@ -19,5 +30,5 @@
             </p>
         </div>
     }
-    <br />
+    <br /><br />
 </div>

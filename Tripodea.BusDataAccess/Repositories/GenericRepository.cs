@@ -31,11 +31,9 @@ namespace Tripodea.BusDataAccess.Repositories
                 query = query.Where(filter);
             }
 
-            foreach (var includeProperty in includeProperties.Split
-                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
+            query = includeProperties.Split(new char[] {','},
+                StringSplitOptions.RemoveEmptyEntries).Aggregate(query,
+                (current, includeProperty) => current.Include(includeProperty));
 
             if (orderBy != null)
             {
@@ -77,11 +75,6 @@ namespace Tripodea.BusDataAccess.Repositories
         {
             dbSet.Attach(entityToUpdate);
             context.Entry(entityToUpdate).State = EntityState.Modified;
-        }
-
-        public object Get(object orderBy)
-        {
-            throw new NotImplementedException();
         }
     }
 }

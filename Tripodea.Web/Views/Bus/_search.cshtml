@@ -6,12 +6,32 @@
             timepicker: false,
             formatDate: 'm/d/Y',
             minDate: '01/01/-1970',
-            //format: 'm/d/Y'
-            format: 'j-F-y'
+            //format: 'j-F-y'
+            format: 'd/m/Y'
         });
     });
+
+    function toggleButton(state) {
+        if (state == "on") {
+            $("#searchButton").removeClass("disabled");
+            $("#searchButton").val("Search");
+            $("#resultPanel").fadeIn();
+        } else if (state == "off") {
+            $("#resultPanel").fadeOut();
+            $("#searchButton").addClass("disabled");
+            $("#searchButton").val("Searching...");
+        }
+    }
 </script>
-<form class="form-horizontal">
+@using (Ajax.BeginForm("Search", new AjaxOptions()
+{
+    UpdateTargetId = "resultPanel",
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    OnBegin = "toggleButton('off')",
+    OnComplete = "toggleButton('on')"
+}))
+{
     @Html.AntiForgeryToken()
     <fieldset>
         <div class="form-group">
@@ -19,23 +39,27 @@
             @Html.DropDownListFor(model => model.JourneyFromId,
                 new SelectList(ViewBag.LocationList, "LocationId", "Name"),
                 "Select Location", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.JourneyFromId)
         </div>
         <div class="form-group">
             <label class="label label-default" for="JourneyToId">To</label>
             @Html.DropDownListFor(model => model.JourneyToId,
                 new SelectList(ViewBag.LocationList, "LocationId", "Name"),
                 "Select Location", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.JourneyToId)
         </div>
         <div class="form-group">
             <label class="label label-default" for="Departure">Departure</label>
-            @Html.TextBoxFor(model=>model.Departure, new
+            @Html.TextBoxFor(model => model.Departure, new
             {
-                @class="form-control",
-                placeholder = "When to leave"
+                @class = "form-control",
+                placeholder = "Select date",
+                autocomplete = "off"
             })
+            @Html.ValidationMessageFor(model => model.Departure)
         </div>
         <div class="form-group">
-            <input type="submit" class="btn btn-success" value="Search" />
+            <input type="submit" class="btn btn-success" value="Search" id="searchButton" />
         </div>
     </fieldset>
-</form>
+}

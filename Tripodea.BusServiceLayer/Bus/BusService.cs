@@ -13,47 +13,48 @@ namespace Tripodea.ServiceLayer.Bus
 {
     public class BusService : IBusService, IDisposable
     {
-        private UnitOfWork unit_of_work = new UnitOfWork();
+        private readonly UnitOfWork _unitOfWork = new UnitOfWork();
 
-        public List<string> GetLocations()
+        public List<Location> GetLocations()
         {
-            var locations = unit_of_work.LocationRepository.Get().Select(l => l.Name).ToList();
+            var locations = _unitOfWork.LocationRepository.Get().OrderBy(l=>l.Name).ToList();
             return locations;
-            //var LocationList = unit_of_work.LocationRepository.Get();
-            //string locations = "[";
-
-            //// create location array for view
-            //foreach (var location in LocationList)
-            //{
-            //    locations += "\"" + location.Name + "\"";
-
-            //    if (LocationList.Last().Name != location.Name)
-            //    {
-            //        locations += ", ";
-            //    }
-            //    else
-            //    {
-            //        locations += "]";
-            //    }
-            //}
-            //return locations;
+        }
+        public List<ResultDto> GetSchedules()
+        {
+            var schedules = _unitOfWork.ScheduleRepository.Get();
+            var result = GetResult(schedules);
+            return result;
         }
 
-        public IEnumerable<Schedule> SearchBus(SearchDto searchBus)
+        public List<ResultDto> SearchBus(SearchDto searchBus)
         {
-            var schedules = unit_of_work.ScheduleRepository.Get(
+            var schedules = _unitOfWork.ScheduleRepository.Get(
                 filter:
                 s => s.JourneyFromId == searchBus.JourneyFromId &&
                 s.JourneyToId == searchBus.JourneyToId,
                 includeProperties: "Company, JourneyFrom, JourneyTo, BusType");
 
             // filter for date and time
-            TimeSpan timeDif = DateTime.Now.TimeOfDay - searchBus.Departure.TimeOfDay;
-            searchBus.Departure += timeDif;
-            schedules = schedules.Where(s => s.DepartureTime.Date == searchBus.Departure.Date
-                                            && s.DepartureTime.TimeOfDay < searchBus.Departure.TimeOfDay);
+            schedules = schedules.Where(s => s.DepartureTime.Date == searchBus.Departure.Date);
+            var result = GetResult(schedules);
+            return result;
+        }
 
-            return schedules;
+        private List<ResultDto> GetResult(IEnumerable<Schedule> schedules)
+        {
+            return (from sched in schedules
+                let soldSeats = _unitOfWork.TicketRepository.Get(filter: t => t.ScheduleId == sched.ScheduleId).Count()
+                select new ResultDto
+                {
+                    ScheduleId = sched.ScheduleId,
+                    Bus = sched.Company.Name + " - " + sched.BusType.Name,
+                    AvailableSeats = sched.BusType.SeatFormat.Seats.Count() - soldSeats,
+                    Departure = sched.DepartureTime,
+                    Description = sched.Description,
+                    JourneyFrom = sched.JourneyFrom.Name,
+                    JourneyTo = sched.JourneyTo.Name
+                }).ToList();
         }
 
         public ResultDto GetResultDetail(int scheduleId)
@@ -149,7 +150,7 @@ namespace Tripodea.ServiceLayer.Bus
         public void BuyTicket(OrderDto order)
         {
             //create the tickets for the order
-            order.Schedule = unit_of_work.ScheduleRepository.GetByID(order.Schedule.ScheduleId);
+            order.Schedule = _unitOfWork.ScheduleRepository.GetByID(order.Schedule.ScheduleId);
 
             Order ticket_order = new Order();
             ticket_order.PassengerName = order.PassengerName;
@@ -158,15 +159,15 @@ namespace Tripodea.ServiceLayer.Bus
             List<string> seats = order.SeatList.Split(' ').ToList();
             string firstSeat = seats.FirstOrDefault();
             //check if any of the tickets are already sold
-            var existingTicket = unit_of_work.TicketRepository.Get(
+            var existingTicket = _unitOfWork.TicketRepository.Get(
                 filter: t => t.ScheduleId == order.Schedule.ScheduleId
                              && t.SeatNumber == firstSeat);
-            
-            if (existingTicket.Count()==0)
+
+            if (existingTicket.Count() == 0)
             {
                 //create the order
-                unit_of_work.OrderRepository.Create(ticket_order);
-                unit_of_work.Save();
+                _unitOfWork.OrderRepository.Create(ticket_order);
+                _unitOfWork.Save();
 
                 List<Ticket> tickets = new List<Ticket>();
                 foreach (var seat in seats)
@@ -177,13 +178,14 @@ namespace Tripodea.ServiceLayer.Bus
                     ticket.Order = ticket_order;
                     ticket.OrderId = ticket_order.OrderId;
 
-                    unit_of_work.TicketRepository.Create(ticket);
+                    _unitOfWork.TicketRepository.Create(ticket);
                 }
-                unit_of_work.Save();
+                _unitOfWork.Save();
             }
         }
 
-        private bool disposed = false;
+
+        private bool _disposed = false;
         public void Dispose()
         {
             Dispose(true);
@@ -191,14 +193,14 @@ namespace Tripodea.ServiceLayer.Bus
         }
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
-                    unit_of_work.Dispose();
+                    _unitOfWork.Dispose();
                 }
             }
-            this.disposed = true;
+            _disposed = true;
         }
     }
 }

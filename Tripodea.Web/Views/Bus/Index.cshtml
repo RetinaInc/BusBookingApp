@@ -3,14 +3,14 @@
 }
 <h2>
     <img src="/images/bus.png" class="pull-left" />&nbsp;
-    @ViewBag.Title
+    <a href="/">@ViewBag.Title</a>
 </h2>
 <hr />
 <div class="container">
-    <div class="col-md-3">
+    <div class="col-md-3" id="searchPanel">
         @Html.Action("Search")
     </div>
-    <div class="col-md-9">
+    <div class="col-md-9" id="resultPanel">
         @Html.Action("Result")
     </div>
 </div>
