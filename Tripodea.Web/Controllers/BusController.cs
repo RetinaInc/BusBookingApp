@@ -9,6 +9,7 @@ using Tripodea.ServiceLayer.DTOs.Bus;
 
 namespace Tripodea.Web.Controllers
 {
+    //this is the main controller
     public class BusController : Controller
     {
         private readonly IBusService _busService;
