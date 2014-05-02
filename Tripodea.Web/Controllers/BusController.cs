@@ -13,9 +13,10 @@ namespace Tripodea.Web.Controllers
     public class BusController : Controller
     {
         private readonly IBusService _busService;
-
+        
         public BusController(IBusService busService)
         {
+            //get the bus service interface
             _busService = busService;
         }
 
