@@ -13,6 +13,7 @@ namespace Tripodea.ServiceLayer.Bus
         List<ResultDto> GetSchedules();
         List<Location> GetLocations();
         List<ResultDto> SearchBus(SearchDto searchBus);
+        SeatSelectionDto GetSeats(int scheduleId);
         ResultDto GetResultDetail(int scheduleId);
 
         void BuyTicket(OrderDto order);

@@ -3,20 +3,18 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tripodea.BusDataAccess.Repositories
 {
     public class GenericRepository<TEntity> where TEntity : class
     {
-        internal DbContext context;
-        internal DbSet<TEntity> dbSet;
+        internal DbContext Context;
+        internal DbSet<TEntity> DbSet;
 
         public GenericRepository(DbContext context)
         {
-            this.context = context;
-            this.dbSet = context.Set<TEntity>();
+            Context = context;
+            DbSet = context.Set<TEntity>();
         }
 
         public virtual IEnumerable<TEntity> Get(
@@ -24,7 +22,7 @@ namespace Tripodea.BusDataAccess.Repositories
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             string includeProperties = "")
         {
-            IQueryable<TEntity> query = dbSet;
+            IQueryable<TEntity> query = DbSet;
 
             if (filter != null)
             {
@@ -44,37 +42,36 @@ namespace Tripodea.BusDataAccess.Repositories
                 return query.ToList();
             }
         }
-
-
-        public virtual TEntity GetByID(object id)
+        
+        public virtual TEntity GetById(object id)
         {
-            return dbSet.Find(id);
+            return DbSet.Find(id);
         }
 
         public virtual void Create(TEntity entity)
         {
-            dbSet.Add(entity);
+            DbSet.Add(entity);
         }
 
         public virtual void Delete(object id)
         {
-            TEntity entityToDelete = dbSet.Find(id);
+            TEntity entityToDelete = DbSet.Find(id);
             Delete(entityToDelete);
         }
 
         public virtual void Delete(TEntity entityToDelete)
         {
-            if (context.Entry(entityToDelete).State == EntityState.Detached)
+            if (Context.Entry(entityToDelete).State == EntityState.Detached)
             {
-                dbSet.Attach(entityToDelete);
+                DbSet.Attach(entityToDelete);
             }
-            dbSet.Remove(entityToDelete);
+            DbSet.Remove(entityToDelete);
         }
 
         public virtual void Update(TEntity entityToUpdate)
         {
-            dbSet.Attach(entityToUpdate);
-            context.Entry(entityToUpdate).State = EntityState.Modified;
+            DbSet.Attach(entityToUpdate);
+            Context.Entry(entityToUpdate).State = EntityState.Modified;
         }
     }
 }

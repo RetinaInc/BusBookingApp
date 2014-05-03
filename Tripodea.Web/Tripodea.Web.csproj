@@ -177,7 +177,6 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BusController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
@@ -253,6 +252,7 @@
     <Content Include="Views\Bus\_search.cshtml" />
     <Content Include="Views\Bus\_result.cshtml" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js.map" />
+    <Content Include="Views\Bus\_seats.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

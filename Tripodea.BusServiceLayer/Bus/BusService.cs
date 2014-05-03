@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Tripodea.BusDataAccess.Repositories;
 using Tripodea.BusDomain;
 using Tripodea.ServiceLayer.DTOs.Bus;
@@ -17,7 +13,7 @@ namespace Tripodea.ServiceLayer.Bus
 
         public List<Location> GetLocations()
         {
-            var locations = _unitOfWork.LocationRepository.Get().OrderBy(l=>l.Name).ToList();
+            var locations = _unitOfWork.LocationRepository.Get().OrderBy(l => l.Name).ToList();
             return locations;
         }
         public List<ResultDto> GetSchedules()
@@ -44,17 +40,53 @@ namespace Tripodea.ServiceLayer.Bus
         private List<ResultDto> GetResult(IEnumerable<Schedule> schedules)
         {
             return (from sched in schedules
-                let soldSeats = _unitOfWork.TicketRepository.Get(filter: t => t.ScheduleId == sched.ScheduleId).Count()
-                select new ResultDto
-                {
-                    ScheduleId = sched.ScheduleId,
-                    Bus = sched.Company.Name + " - " + sched.BusType.Name,
-                    AvailableSeats = sched.BusType.SeatFormat.Seats.Count() - soldSeats,
-                    Departure = sched.DepartureTime,
-                    Description = sched.Description,
-                    JourneyFrom = sched.JourneyFrom.Name,
-                    JourneyTo = sched.JourneyTo.Name
-                }).ToList();
+                    let soldSeats = _unitOfWork.TicketRepository.Get(filter: t => t.ScheduleId == sched.ScheduleId).Count()
+                    select new ResultDto
+                    {
+                        ScheduleId = sched.ScheduleId,
+                        Bus = sched.Company.Name + " - " + sched.BusType.Name,
+                        AvailableSeats = sched.BusType.SeatFormat.Seats.Count() - soldSeats,
+                        Departure = sched.DepartureTime,
+                        Description = sched.Description,
+                        JourneyFrom = sched.JourneyFrom.Name,
+                        JourneyTo = sched.JourneyTo.Name
+                    }).ToList();
+        }
+
+        public SeatSelectionDto GetSeats(int scheduleId)
+        {
+            var schedule = _unitOfWork.ScheduleRepository.GetById(scheduleId);
+
+            //get all the seats in the schedule
+            var seats = schedule.BusType.SeatFormat.Seats.
+                        Select(seat => new SeatDto
+                                {
+                                    SeatClass = seat.SeatClass,
+                                    SeatNumber = seat.SeatNumber,
+                                    Available = true
+                                }).ToList();
+
+            //get the booked seats
+            var bookedSeats =
+                _unitOfWork.TicketRepository.Get(filter: t => t.ScheduleId == scheduleId)
+                    .ToList();
+
+            //if there are sold seats then update availableSeats
+            if (bookedSeats.Count > 0)
+                foreach (var seat in from bookedSeat in bookedSeats
+                    from seat in seats
+                    where seat.SeatNumber == bookedSeat.SeatNumber
+                    select seat)
+                    seat.Available = false;
+
+            //return the results
+            return new SeatSelectionDto
+            {
+                ScheduleId = scheduleId,
+                BusInfo = schedule.Company.Name + " - " + schedule.BusType.Name,
+                LocationInfo = schedule.JourneyFrom.Name + " to " + schedule.JourneyTo.Name,
+                Seats = seats
+            };
         }
 
         public ResultDto GetResultDetail(int scheduleId)
@@ -150,7 +182,7 @@ namespace Tripodea.ServiceLayer.Bus
         public void BuyTicket(OrderDto order)
         {
             //create the tickets for the order
-            order.Schedule = _unitOfWork.ScheduleRepository.GetByID(order.Schedule.ScheduleId);
+            order.Schedule = _unitOfWork.ScheduleRepository.GetById(order.Schedule.ScheduleId);
 
             Order ticket_order = new Order();
             ticket_order.PassengerName = order.PassengerName;

@@ -55,6 +55,7 @@
     <Compile Include="DTOs\Bus\SearchDto.cs" />
     <Compile Include="Bus\IBusService.cs" />
     <Compile Include="DTOs\Bus\SeatDto.cs" />
+    <Compile Include="DTOs\Bus\SeatSelectionDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

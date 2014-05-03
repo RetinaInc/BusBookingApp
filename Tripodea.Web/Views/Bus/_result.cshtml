@@ -17,7 +17,7 @@
     @foreach (var result in Model)
     {
         <div>
-            <h4><a href="#">@result.Bus</a></h4>
+            <h4><a href="@Url.Action("SeatSelect", new {scheduleId = result.ScheduleId})">@result.Bus</a></h4>
             <h6>
                 @result.JourneyFrom to @result.JourneyTo&nbsp;|&nbsp;
                 Available seats

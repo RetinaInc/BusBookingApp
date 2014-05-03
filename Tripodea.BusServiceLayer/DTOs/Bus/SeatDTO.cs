@@ -8,10 +8,8 @@ namespace Tripodea.ServiceLayer.DTOs.Bus
 {
     public class SeatDto
     {
-        public virtual string SeatNumber { get; set; }
-        public virtual string SeatClass { get; set; }
-        
-        // status = 1 for availbable seats, status = 0 for booked seats
-        public virtual int Status { get; set; }
+        public string SeatNumber { get; set; }
+        public string SeatClass { get; set; }
+        public Boolean Available { get; set; }
     }
 }

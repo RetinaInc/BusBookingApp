@@ -19,11 +19,12 @@ namespace Tripodea.Web.Controllers
         }
 
         //
-        // GET: /Bus/
+        // the home page
         public ActionResult Index()
         {
             return View();
         }
+        // search journeys
         [HttpGet]
         public ActionResult Search()
         {
@@ -31,6 +32,7 @@ namespace Tripodea.Web.Controllers
             return PartialView("_search");
         }
 
+        // journey search results
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Search(SearchDto searchQuery)
@@ -45,6 +47,14 @@ namespace Tripodea.Web.Controllers
                 RedirectToAction("Index");
                 return null;
             }
+        }
+
+        // seat selection
+        [HttpGet]
+        public ActionResult SeatSelect(int scheduleId)
+        {
+            SeatSelectionDto seats = _busService.GetSeats(scheduleId);
+            return PartialView("_seats", seats);
         }
 
         public ActionResult Result()

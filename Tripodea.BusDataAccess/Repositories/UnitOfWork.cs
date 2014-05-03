@@ -1,34 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tripodea.BusDomain;
 
 namespace Tripodea.BusDataAccess.Repositories
 {
     public class UnitOfWork : IDisposable
     {
-        private BusContext context = new BusContext();
-        private GenericRepository<Company> companyRepository;
-        private GenericRepository<BusType> busTypeRepository;        
-        private GenericRepository<SeatFormat> seatFormatRepository;
-        private GenericRepository<Seat> seatRepository;
-        private GenericRepository<Schedule> scheduleRepository;
-        private GenericRepository<Location> locationRepository;
-        private GenericRepository<Ticket> ticketRepository;
-        private GenericRepository<Order> orderRepository;
+        private readonly BusContext _context = new BusContext();
+        private GenericRepository<Company> _companyRepository;
+        private GenericRepository<BusType> _busTypeRepository;        
+        private GenericRepository<SeatFormat> _seatFormatRepository;
+        private GenericRepository<Seat> _seatRepository;
+        private GenericRepository<Schedule> _scheduleRepository;
+        private GenericRepository<Location> _locationRepository;
+        private GenericRepository<Ticket> _ticketRepository;
+        private GenericRepository<Order> _orderRepository;
 
         public GenericRepository<Company> CompanyRepository
         {
             get
             {
-
-                if (this.companyRepository == null)
+                if (this._companyRepository == null)
                 {
-                    this.companyRepository = new GenericRepository<Company>(context);
+                    this._companyRepository = new GenericRepository<Company>(_context);
                 }
-                return companyRepository;
+                return _companyRepository;
             }
         }
 
@@ -36,11 +31,11 @@ namespace Tripodea.BusDataAccess.Repositories
         {
             get
             {
-                if (this.busTypeRepository == null)
+                if (this._busTypeRepository == null)
                 {
-                    this.busTypeRepository = new GenericRepository<BusType>(context);
+                    this._busTypeRepository = new GenericRepository<BusType>(_context);
                 }
-                return busTypeRepository;
+                return _busTypeRepository;
             }
         }
 
@@ -48,11 +43,11 @@ namespace Tripodea.BusDataAccess.Repositories
         {
             get
             {
-                if (this.orderRepository == null)
+                if (this._orderRepository == null)
                 {
-                    this.orderRepository = new GenericRepository<Order>(context);
+                    this._orderRepository = new GenericRepository<Order>(_context);
                 }
-                return orderRepository;
+                return _orderRepository;
             }
         }
 
@@ -60,11 +55,11 @@ namespace Tripodea.BusDataAccess.Repositories
         {
             get
             {
-                if (this.seatFormatRepository == null)
+                if (this._seatFormatRepository == null)
                 {
-                    this.seatFormatRepository = new GenericRepository<SeatFormat>(context);
+                    this._seatFormatRepository = new GenericRepository<SeatFormat>(_context);
                 }
-                return seatFormatRepository;
+                return _seatFormatRepository;
             }
         }
 
@@ -72,11 +67,11 @@ namespace Tripodea.BusDataAccess.Repositories
         {
             get
             {
-                if (this.seatRepository == null)
+                if (this._seatRepository == null)
                 {
-                    this.seatRepository = new GenericRepository<Seat>(context);
+                    this._seatRepository = new GenericRepository<Seat>(_context);
                 }
-                return seatRepository;
+                return _seatRepository;
             }
         }
 
@@ -84,11 +79,11 @@ namespace Tripodea.BusDataAccess.Repositories
         {
             get
             {
-                if (this.scheduleRepository == null)
+                if (this._scheduleRepository == null)
                 {
-                    this.scheduleRepository = new GenericRepository<Schedule>(context);
+                    this._scheduleRepository = new GenericRepository<Schedule>(_context);
                 }
-                return scheduleRepository;
+                return _scheduleRepository;
             }
         }
 
@@ -96,11 +91,11 @@ namespace Tripodea.BusDataAccess.Repositories
         {
             get
             {
-                if (this.locationRepository == null)
+                if (this._locationRepository == null)
                 {
-                    this.locationRepository = new GenericRepository<Location>(context);
+                    this._locationRepository = new GenericRepository<Location>(_context);
                 }
-                return locationRepository;
+                return _locationRepository;
             }
         }
 
@@ -109,31 +104,31 @@ namespace Tripodea.BusDataAccess.Repositories
             get
             {
 
-                if (this.ticketRepository == null)
+                if (this._ticketRepository == null)
                 {
-                    this.ticketRepository = new GenericRepository<Ticket>(context);
+                    this._ticketRepository = new GenericRepository<Ticket>(_context);
                 }
-                return ticketRepository;
+                return _ticketRepository;
             }
         }
 
         public void Save()
         {
-            context.SaveChanges();
+            _context.SaveChanges();
         }
 
-        private bool disposed = false;
+        private bool _disposed = false;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
-                    context.Dispose();
+                    _context.Dispose();
                 }
             }
-            this.disposed = true;
+            _disposed = true;
         }
 
         public void Dispose()

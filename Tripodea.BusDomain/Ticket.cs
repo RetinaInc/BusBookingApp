@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Tripodea.BusDomain
 {
@@ -13,6 +8,8 @@ namespace Tripodea.BusDomain
 
         [Required]
         public virtual string SeatNumber { get; set; }
+        [Required]
+        public virtual string SeatClass { get; set; }
         
         [Required]
         public virtual int ScheduleId { get; set; }
