@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <p>
-                    @Html.ActionLink("Register", "Register") if you don't have a local account.
+                    @Html.ActionLink("Register", "Register", routeValues: new { returnUrl = ViewBag.ReturnUrl }) if you don't have a local account.
                 </p>
             }
         </section>

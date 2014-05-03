@@ -10,10 +10,10 @@ namespace Tripodea.ServiceLayer.DTOs.Bus
 {
     public class OrderDto
     {
-        public virtual ICollection<SeatSelectionDto> SelectedSeats { get; set; }
-        public virtual string SeatList { get; set; }
-        public virtual Schedule Schedule { get; set; }
-        [Required]
-        public virtual string PassengerName { get; set; }
+        public string BusInfo { get; set; }
+        public string LocationDetail { get; set; }
+        public DateTime Departure { get; set; }
+        public List<string> SelectedSeats { get; set; }
+        public string CustomerName { get; set; }
     }
 }

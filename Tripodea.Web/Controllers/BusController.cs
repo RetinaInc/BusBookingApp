@@ -12,18 +12,19 @@ namespace Tripodea.Web.Controllers
     //this is the main controller
     public class BusController : Controller
     {
+        //initialize bus service interface
         private readonly IBusService _busService;
         public BusController(IBusService busService)
         {
             _busService = busService;
         }
 
-        //
         // the home page
         public ActionResult Index()
         {
             return View();
         }
+
         // search journeys
         [HttpGet]
         public ActionResult Search()
@@ -31,7 +32,6 @@ namespace Tripodea.Web.Controllers
             ViewBag.LocationList = _busService.GetLocations();
             return PartialView("_search");
         }
-
         // journey search results
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -56,6 +56,18 @@ namespace Tripodea.Web.Controllers
             SeatSelectionDto seats = _busService.GetSeats(scheduleId);
             return PartialView("_seats", seats);
         }
+
+        [Authorize]
+        [HttpGet]
+        //[ValidateAntiForgeryToken]
+        public ActionResult Order(string seats, int scheduleId)
+        {
+            //_busService.Order(seats, scheduleId);
+            ViewBag.ScheduleId = scheduleId;
+            ViewBag.Seats = seats;
+            return View();
+        }
+
 
         public ActionResult Result()
         {

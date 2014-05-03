@@ -1,4 +1,12 @@
 ﻿@model IEnumerable<Tripodea.ServiceLayer.DTOs.Bus.ResultDto>
+
+@*Load details modal script*@
+<script>
+    function loadDetails() {
+        $('#details').modal('show');
+    }
+</script>
+
 <div class="container">
     @if (!Model.Any())
     {
@@ -17,7 +25,16 @@
     @foreach (var result in Model)
     {
         <div>
-            <h4><a href="@Url.Action("SeatSelect", new {scheduleId = result.ScheduleId})">@result.Bus</a></h4>
+            <h4>
+                @Ajax.ActionLink(result.Bus, "SeatSelect", new { scheduleId = result.ScheduleId },
+                    new AjaxOptions
+                    {
+                        UpdateTargetId = "details",
+                        HttpMethod = "GET",
+                        InsertionMode = InsertionMode.Replace,
+                        OnSuccess = "loadDetails()"
+                    })
+            </h4>
             <h6>
                 @result.JourneyFrom to @result.JourneyTo&nbsp;|&nbsp;
                 Available seats
@@ -32,3 +49,7 @@
     }
     <br /><br />
 </div>
+
+<!-- Details -->
+<div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+

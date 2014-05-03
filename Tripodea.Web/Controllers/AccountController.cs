@@ -64,7 +64,7 @@ namespace Tripodea.Web.Controllers
         //
         // GET: /Account/Register
         [AllowAnonymous]
-        public ActionResult Register()
+        public ActionResult Register(string returnUrl)
         {
             return View();
         }
@@ -74,7 +74,7 @@ namespace Tripodea.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -83,7 +83,8 @@ namespace Tripodea.Web.Controllers
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToLocal(returnUrl);
+                    //return RedirectToAction("Index", "Bus");
                 }
                 else
                 {
@@ -290,7 +291,7 @@ namespace Tripodea.Web.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Bus");
         }
 
         //
@@ -372,7 +373,7 @@ namespace Tripodea.Web.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Bus");
             }
         }
 
