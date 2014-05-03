@@ -8,29 +8,6 @@ using Tripodea.BusDomain;
 
 namespace Tripodea.BusDataAccess
 {
-    //configuration for bus and company
-    //public class BusConfiguration : EntityTypeConfiguration<BusType>
-    //{
-    //    public BusConfiguration()
-    //    {
-    //        HasRequired(b => b.Company)
-    //            .WithMany(c => c.Buses)
-    //            .WillCascadeOnDelete(true);
-
-    //    }
-    //}
-
-    //configuration for seat and bus
-    //public class SeatConfiguration : EntityTypeConfiguration<Seat_old>
-    //{
-    //    public SeatConfiguration()
-    //    {
-    //        HasRequired(b => b.Bus)
-    //            .WithMany(c => c.Seats)
-    //            .WillCascadeOnDelete(true);
-    //    }
-    //}
-
     //configuration for schedule and location
     public class ScheduleConfiguration : EntityTypeConfiguration<Schedule>
     {
