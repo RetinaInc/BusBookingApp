@@ -19,7 +19,7 @@ namespace Tripodea.Web.Controllers
             _busService = busService;
         }
 
-        // the home page
+        // the bus home page
         public ActionResult Index()
         {
             return View();
@@ -68,11 +68,16 @@ namespace Tripodea.Web.Controllers
             return View();
         }
 
-
         public ActionResult Result()
         {
             var results = _busService.GetSchedules();
             return PartialView("_result", results);
+        }
+
+        //the about page
+        public ActionResult About()
+        {
+            return View();
         }
     }
 }
