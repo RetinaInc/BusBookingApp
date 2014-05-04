@@ -10,21 +10,6 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/datetime")
-    
-    @*<script>
-        $(function () {
-            var actionName = @Html.ViewContext.RouteData.GetRequiredString("action");
-            if (actionName == "Index") {
-                $("#About").removeClass("active");
-                $("#Index").removeClass("active");
-                $("#Index").addClass("active");
-            } else if (actionName == "About"){
-                $("#Index").removeClass("active");
-                $("#About").removeClass("active");
-                $("#About").addClass("active");
-            }
-        });
-    </script>*@
 </head>
 <body>
     <div class="navbar navbar-default navbar-fixed-top">
@@ -59,6 +44,7 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/ajax")
+    @Scripts.Render("~/bundles/foolproof")
     @RenderSection("scripts", required: false)
 </body>
 </html>

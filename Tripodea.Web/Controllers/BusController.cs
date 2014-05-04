@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Tripodea.BusDataAccess.Repositories;
+﻿using System.Web.Mvc;
+using System.Web.WebPages;
+using Microsoft.Ajax.Utilities;
 using Tripodea.ServiceLayer.Bus;
 using Tripodea.ServiceLayer.DTOs.Bus;
 
@@ -59,13 +56,11 @@ namespace Tripodea.Web.Controllers
 
         [Authorize]
         [HttpGet]
-        //[ValidateAntiForgeryToken]
         public ActionResult Order(string seats, int scheduleId)
         {
-            //_busService.Order(seats, scheduleId);
-            ViewBag.ScheduleId = scheduleId;
-            ViewBag.Seats = seats;
-            return View();
+            string customer = System.Web.HttpContext.Current.User.Identity.Name;
+            var order = _busService.Order(seats, scheduleId, customer);
+            return View(order);
         }
 
         public ActionResult Result()

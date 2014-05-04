@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using Foolproof;
 
 namespace Tripodea.ServiceLayer.DTOs.Bus
 {
@@ -15,9 +11,10 @@ namespace Tripodea.ServiceLayer.DTOs.Bus
         public int JourneyFromId { get; set; }
         [Required(ErrorMessage = "Where are you going to?")]
         [Display(Name = "To")]
+        [NotEqualTo("JourneyFromId", ErrorMessage = "You cannot go to the same place you start from. Please choose a different location.")]
         public int JourneyToId { get; set; }
         [Required(ErrorMessage = "When are you going?")]
-        [DataType(DataType.DateTime, ErrorMessage = "You must select a date.")]
+        [DataType(DataType.DateTime, ErrorMessage = "You must select a dpearture date.")]
         [Display(Name = "Departure Date")]
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy  H:mm}")]
         public DateTime Departure { get; set; }

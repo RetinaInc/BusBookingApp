@@ -16,7 +16,7 @@ namespace Tripodea.ServiceLayer.Bus
         SeatSelectionDto GetSeats(int scheduleId);
         new void Dispose();
         void BuyTicket(OrderDto order);
-        OrderDto Order(string seats, int scheduleId);
+        OrderDto Order(string seats, int scheduleId, string customer);
         
     }
 }

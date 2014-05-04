@@ -4,8 +4,8 @@ namespace Tripodea.BusDomain
 {
     public class Seat
     {
-        [Key]
-        public virtual string SeatId { get; set; }
+        public virtual int SeatId { get; set; }
+        public virtual string UniqueId { get; set; }
         [Required]
         public virtual string SeatClass { get; set; }
         [Required]

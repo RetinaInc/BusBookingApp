@@ -74,9 +74,9 @@ namespace Tripodea.ServiceLayer.Bus
             //if there are sold seats then update availableSeats
             if (bookedSeats.Count > 0)
                 foreach (var seat in from bookedSeat in bookedSeats
-                    from seat in seats
-                    where seat.SeatNumber == bookedSeat.SeatNumber
-                    select seat)
+                                     from seat in seats
+                                     where seat.SeatNumber == bookedSeat.SeatNumber
+                                     select seat)
                     seat.Available = false;
 
             //return the results
@@ -91,34 +91,31 @@ namespace Tripodea.ServiceLayer.Bus
         }
 
         // create an order for confirmation
-        public OrderDto Order(string seats, int scheduleId)
+        public OrderDto Order(string seats, int scheduleId, string customer)
         {
-            //OrderDto order_dto = new OrderDto();
+            //get schedule info
+            var schedule = _unitOfWork.ScheduleRepository.GetById(scheduleId);
+            
+            //create seats
+            var strSeats = seats.Split(',');
+            var seatList = (from seat in strSeats
+                let seatInfo = _unitOfWork.SeatRepository.Get(
+                filter: s => s.SeatFormatId == schedule.BusType.SeatFormatId).FirstOrDefault()
+                where seatInfo != null
+                select new SeatDto
+                {
+                    SeatNumber = seat, SeatClass = seatInfo.SeatClass
+                }).ToList();
 
-            //order_dto.PassengerName = "Demo User";
-            //order_dto.Schedule = unit_of_work.ScheduleRepository.Get(
-            //                        filter: s => s.ScheduleId == result.Schedule.ScheduleId)
-            //                        .FirstOrDefault();
-
-            //order_dto.SelectedSeats = new List<SeatDto>();
-            //order_dto.SeatList = result.SelectedSeats;
-
-            //List<string> seats = result.SelectedSeats.Split(' ').ToList();
-            //foreach (string seat in seats)
-            //{
-            //    SeatDto seat_dto = new SeatDto();
-            //    seat_dto.SeatNumber = seat;
-
-            //    // get seat class
-            //    seat_dto.SeatClass = unit_of_work.SeatRepository.Get(
-            //        filter: s => s.SeatNumber == seat &&
-            //                s.SeatFormatId == result.Schedule.BusType.SeatFormatId)
-            //                .Select(s => s.SeatClass).FirstOrDefault();
-
-            //    order_dto.SelectedSeats.Add(seat_dto);
-            //}
-
-            return null;
+            //return the result
+            return new OrderDto
+            {
+                BusInfo = schedule.Company.Name + " - " + schedule.BusType.Name,
+                LocationDetail = schedule.JourneyFrom.Name + " to " + schedule.JourneyTo.Name,
+                Departure = schedule.DepartureTime,
+                Seats = seatList,
+                CustomerName = customer
+            };
         }
 
         public void BuyTicket(OrderDto order)

@@ -1,10 +1,56 @@
-﻿
+﻿@model Tripodea.ServiceLayer.DTOs.Bus.OrderDto
 @{
     ViewBag.Title = "Order";
 }
-
-<h2>@ViewBag.Title</h2>
-<hr/>
-@ViewBag.ScheduleId
-@ViewBag.Seats
-@HttpContext.Current.User.Identity.Name
+<script>
+    function removeSeat() {
+        var numTickets = document.getElementsByClassName('alert alert-info').length - 1;
+        document.getElementById('ticketHeader').innerHTML = 'Tickets (' + numTickets + ')';
+    }
+</script>
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+    <hr />
+    <div class="panel panel-default" id="journeyInfo">
+        <div class="panel-heading">
+            Journey Information
+        </div>
+        <div class="panel-body">
+            <p>
+                Bus: @Model.BusInfo <br />
+                Journey: @Model.LocationDetail <br />
+                Bus leaves at: @Model.Departure
+            </p>
+        </div>
+    </div>
+    <div class="panel panel-default" id="seatInfo">
+        <div id="ticketHeader" class="panel-heading">
+            Tickets (@Model.Seats.Count)
+        </div>
+        <div class="panel-body">
+            <p>
+                @foreach (var seat in Model.Seats)
+                {
+                    <div class="alert alert-info" id="@seat.SeatNumber">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true" onclick="removeSeat()">&times;</button>
+                        Seat Class <strong>@seat.SeatClass</strong><br />
+                        Seat Number <strong>@seat.SeatNumber</strong>
+                    </div>
+                }
+            </p>
+        </div>
+    </div>
+    <div class="panel panel-default" id="customerInfo">
+        <div class="panel-heading">
+            Customer Information
+        </div>
+        <div class="panel-body">
+            <p>
+                Customer Name: @Model.CustomerName
+            </p>
+        </div>
+    </div>
+    <div class="pull-right">
+        <button class="btn btn-primary">Buy Ticket(s)</button>
+    </div>
+</div>

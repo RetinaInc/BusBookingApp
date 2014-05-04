@@ -18,10 +18,14 @@
 using StructureMap;
 using StructureMap.Graph;
 using Tripodea.ServiceLayer.Bus;
+using Tripodea.Web.Models;
 
-namespace Tripodea.Web.DependencyResolution {
-    public static class IoC {
-        public static IContainer Initialize() {
+namespace Tripodea.Web.DependencyResolution
+{
+    public static class IoC
+    {
+        public static IContainer Initialize()
+        {
             ObjectFactory.Initialize(x =>
                         {
                             x.Scan(scan =>
@@ -30,6 +34,9 @@ namespace Tripodea.Web.DependencyResolution {
                                         scan.WithDefaultConventions();
                                     });
                             x.For<IBusService>().Use<BusService>();
+                            x.For<Microsoft.AspNet.Identity.IUserStore<ApplicationUser>>()
+                            .Use<Microsoft.AspNet.Identity.EntityFramework.UserStore<ApplicationUser>>();
+                            x.For<System.Data.Entity.DbContext>().Use(() => new ApplicationDbContext());
                         });
             return ObjectFactory.Container;
         }
