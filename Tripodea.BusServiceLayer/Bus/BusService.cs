@@ -90,7 +90,7 @@ namespace Tripodea.ServiceLayer.Bus
             };
         }
 
-        // create an order for confirmation
+        // create a pending order for confirmation
         public OrderDto Order(string seats, int scheduleId, string customer)
         {
             //get schedule info
@@ -100,16 +100,18 @@ namespace Tripodea.ServiceLayer.Bus
             var strSeats = seats.Split(',');
             var seatList = (from seat in strSeats
                 let seatInfo = _unitOfWork.SeatRepository.Get(
-                filter: s => s.SeatFormatId == schedule.BusType.SeatFormatId).FirstOrDefault()
+                filter: s => s.SeatFormatId == schedule.BusType.SeatFormatId && s.SeatNumber == seat).FirstOrDefault()
                 where seatInfo != null
                 select new SeatDto
                 {
-                    SeatNumber = seat, SeatClass = seatInfo.SeatClass
+                    SeatNumber = seat,
+                    SeatClass = seatInfo.SeatClass
                 }).ToList();
 
             //return the result
             return new OrderDto
             {
+                ScheduleId = scheduleId,
                 BusInfo = schedule.Company.Name + " - " + schedule.BusType.Name,
                 LocationDetail = schedule.JourneyFrom.Name + " to " + schedule.JourneyTo.Name,
                 Departure = schedule.DepartureTime,
@@ -118,41 +120,44 @@ namespace Tripodea.ServiceLayer.Bus
             };
         }
 
-        public void BuyTicket(OrderDto order)
+        public void BuyTicket(string seats, int scheduleId, string customer)
         {
-            ////create the tickets for the order
-            //order.Schedule = _unitOfWork.ScheduleRepository.GetById(order.Schedule.ScheduleId);
+            //create the order
+            var order = new Order
+            {
+                Customer = customer,
+                ScheduleId = scheduleId
+            };
 
-            //Order ticket_order = new Order();
-            //ticket_order.PassengerName = order.PassengerName;
+            _unitOfWork.OrderRepository.Create(order);
+            _unitOfWork.Save();
 
-            ////get the list of selected seats
-            //List<string> seats = order.SeatList.Split(' ').ToList();
-            //string firstSeat = seats.FirstOrDefault();
-            ////check if any of the tickets are already sold
-            //var existingTicket = _unitOfWork.TicketRepository.Get(
-            //    filter: t => t.ScheduleId == order.Schedule.ScheduleId
-            //                 && t.SeatNumber == firstSeat);
+            //create tickets
+            var schedule = _unitOfWork.ScheduleRepository.GetById(scheduleId);
+            var orderedSeats = seats.Split(',');
+            foreach (var seatNumber in orderedSeats)
+            {
+                //check if the seat has already been sold
+                var soldSeat = _unitOfWork.TicketRepository.Get(filter: t => t.ScheduleId == scheduleId &&
+                                                                             t.SeatNumber == seatNumber);
+                if (!soldSeat.Any())
+                {
+                    //get seat class
+                    var seatClass = _unitOfWork.SeatRepository.Get(
+                        filter: s => s.SeatFormatId == schedule.BusType.SeatFormatId &&
+                                     s.SeatNumber == seatNumber).FirstOrDefault().SeatClass;
 
-            //if (existingTicket.Count() == 0)
-            //{
-            //    //create the order
-            //    _unitOfWork.OrderRepository.Create(ticket_order);
-            //    _unitOfWork.Save();
-
-            //    List<Ticket> tickets = new List<Ticket>();
-            //    foreach (var seat in seats)
-            //    {
-            //        Ticket ticket = new Ticket();
-            //        ticket.SeatNumber = seat;
-            //        ticket.Schedule = order.Schedule;
-            //        ticket.Order = ticket_order;
-            //        ticket.OrderId = ticket_order.OrderId;
-
-            //        _unitOfWork.TicketRepository.Create(ticket);
-            //    }
-            //    _unitOfWork.Save();
-            //}
+                    //create the ticket
+                    _unitOfWork.TicketRepository.Create(new Ticket
+                    {
+                        OrderId = order.OrderId,
+                        ScheduleId = scheduleId,
+                        SeatNumber = seatNumber,
+                        SeatClass = seatClass
+                    });
+                }
+            }
+            _unitOfWork.Save();
         }
 
 

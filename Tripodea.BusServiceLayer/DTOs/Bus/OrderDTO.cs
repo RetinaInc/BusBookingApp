@@ -5,6 +5,7 @@ namespace Tripodea.ServiceLayer.DTOs.Bus
 {
     public class OrderDto
     {
+        public int ScheduleId { get; set; }
         public string BusInfo { get; set; }
         public string LocationDetail { get; set; }
         public DateTime Departure { get; set; }

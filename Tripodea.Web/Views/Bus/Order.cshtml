@@ -6,6 +6,19 @@
     function removeSeat() {
         var numTickets = document.getElementsByClassName('alert alert-info').length - 1;
         document.getElementById('ticketHeader').innerHTML = 'Tickets (' + numTickets + ')';
+        getSeats();
+    }
+
+    function getSeats() {
+        var seatNumbers = '';
+        var selectedSeats = document.getElementsByClassName("alert alert-info");
+        for (var i = 0; i < selectedSeats.length; i++) {
+            seatNumbers += selectedSeats[i].id;
+            if (i != selectedSeats.length - 1) {
+                seatNumbers += ',';
+            }
+        }
+        $("#seats").val(seatNumbers);
     }
 </script>
 <div class="container">
@@ -50,7 +63,11 @@
             </p>
         </div>
     </div>
-    <div class="pull-right">
-        <button class="btn btn-primary">Buy Ticket(s)</button>
-    </div>
+    @using (Html.BeginForm("OrderConfirm","Bus")) { 
+        <div class="pull-right">
+            <button class="btn btn-success" type="submit" onclick="getSeats()">Buy Ticket(s)</button>
+        </div>
+        <input type="text" name="seats" id="seats" class="hidden"/>
+        @Html.HiddenFor(m=>m.ScheduleId)
+    }
 </div>

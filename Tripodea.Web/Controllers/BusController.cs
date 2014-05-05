@@ -1,6 +1,5 @@
 ﻿using System.Web.Mvc;
-using System.Web.WebPages;
-using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.Identity;
 using Tripodea.ServiceLayer.Bus;
 using Tripodea.ServiceLayer.DTOs.Bus;
 
@@ -53,16 +52,24 @@ namespace Tripodea.Web.Controllers
             SeatSelectionDto seats = _busService.GetSeats(scheduleId);
             return PartialView("_seats", seats);
         }
-
+        //create a pending order
         [Authorize]
         [HttpGet]
         public ActionResult Order(string seats, int scheduleId)
         {
-            string customer = System.Web.HttpContext.Current.User.Identity.Name;
+            System.Web.HttpContext.Current.User.Identity.GetUserId();
+            var customer = System.Web.HttpContext.Current.User.Identity.Name;
             var order = _busService.Order(seats, scheduleId, customer);
             return View(order);
         }
 
+        [HttpPost]
+        public ActionResult OrderConfirm(string seats, int scheduleId)
+        {
+            var customer = System.Web.HttpContext.Current.User.Identity.Name;
+            _busService.BuyTicket(seats, scheduleId, customer);
+            return View();
+        }
         public ActionResult Result()
         {
             var results = _busService.GetSchedules();
