@@ -1,0 +1,74 @@
+﻿@model Tripodea.ServiceLayer.DTOs.Bus.SeatSelectionDto
+
+<script>
+    function toggleSelect(id) {
+        //toggle label color on click
+        if ($('#' + id).hasClass('label-success')) {
+            $('#' + id).removeClass('label-success');
+            $('#' + id).addClass('label-primary');
+        } else {
+            $('#' + id).removeClass('label-primary');
+            $('#' + id).addClass('label-success');
+        }
+
+        //get all the selected seats
+        var selectedSeats = document.getElementsByClassName("label-primary");
+
+        //update status message
+        document.getElementById("seatSelected").innerHTML = selectedSeats.length + ' seat(s) selected';
+
+        //keep number of selected seats in text box
+        var seatNumbers = '';
+        for (var i = 0; i < selectedSeats.length; i++) {
+            seatNumbers += selectedSeats[i].id;
+            if (i != selectedSeats.length - 1) {
+                seatNumbers += ',';
+            }
+        }
+        $("#seats").val(seatNumbers);
+
+        //toggle select button state
+        $("#btnSelect").removeClass("disabled");
+        if (selectedSeats.length <= 0)
+            $("#btnSelect").addClass("disabled");
+    }
+</script>
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Seat Selection</h4>
+        </div>
+        <div class="modal-body">
+            <p>
+                @Model.BusInfo <br />
+                @Model.LocationInfo <br />
+                Departure at: @Model.Departure<br />
+                <label class="label label-default" id="seatSelected">0 seat(s) selected</label>
+            </p>
+            @foreach (var seat in Model.Seats)
+            {
+                if (seat.Available)
+                {
+                    <label id="@seat.SeatNumber" class="label label-success" onclick="toggleSelect('@seat.SeatNumber')" style="cursor: pointer">@seat.SeatNumber</label>
+                }
+                else
+                {
+                    <label id="@seat.SeatNumber" class="label label-danger">@seat.SeatNumber</label>
+                }
+            }
+
+        </div>
+        <div class="modal-footer">
+            @using (Html.BeginForm("Order","Bus",FormMethod.Get))
+            {
+                //@Html.AntiForgeryToken()
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary disabled" id="btnSelect">Select Seats</button>
+                <input type="text" class="hidden" id="seats" name="seats" />
+                @Html.HiddenFor(model => model.ScheduleId)
+            }
+        </div>
+    </div>
+</div>
