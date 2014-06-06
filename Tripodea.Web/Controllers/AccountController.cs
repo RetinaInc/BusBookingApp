@@ -76,7 +76,7 @@ namespace Tripodea.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser() { 
-                    UserName = model.UserName 
+                    UserName = model.UserName, 
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Email = model.Email
