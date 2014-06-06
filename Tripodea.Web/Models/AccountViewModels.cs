@@ -59,15 +59,15 @@ namespace Tripodea.Web.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-        
+        // for first name
         [Required]
         [Display(Name = "First name")]
         public string FirstName { get; set; }
-
+//for last name
         [Required]
         [Display(Name = "Last name")]
         public string LastName { get; set; }
-
+        //for email
         [Required]
         [StringLength(60, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 5)]
         [Display(Name = "Email")]
